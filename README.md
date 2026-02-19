@@ -58,7 +58,7 @@ Replace the string [release] with the actual release to download. For example, t
 10) Verify that Prometheus is successfully installed using the below command:
     `prometheus --version`
 
-## How to Configure Prometheus as a Service
+## How To Configure Prometheus As A Service
 Although Prometheus can be started and stopped from the command line, it is more convenient to run it as a service using the systemctl utility. This allows it to run in the background.
 
 Before Prometheus can monitor any external systems, additional configuration details must be added to the prometheus.yml file. However, Prometheus is already configured to monitor itself, allowing for a quick sanity test. To configure Prometheus, follow the steps below.
@@ -124,7 +124,7 @@ WantedBy=multi-user.target
 7) Access the Prometheus web interface and dashboard.
 
 
-# How to Install and Configure Node Exporter on the Client
+## How To Install And Configure Node Exporter On The Client
 Before a remote system can be monitored, it must have some type of client to collect the statistics. Several third-party clients are available. However, for ease of use, Prometheus recommends the Node Exporter client. After Node Exporter is installed on a client, the client can be added to the list of servers to scrape in prometheus.yml.
 
 To install Node Exporter, follow these steps. Repeat these instructions for every client.
@@ -194,74 +194,71 @@ Active: active (running) since Tue 2023-04-11 13:48:06 UTC; 4s ago
 
 11) Use a web browser to visit port 9100 on the client node, for example, http://local_ip_addr:9100. A page entitled Node Exporter is displayed along with a link reading Metrics. Click the Metrics link and confirm the statistics are being collected. For a detailed explanation of the various statistics, see the Node Exporter Documentation.
 
-# How to Configure Prometheus to Monitor Client Nodes
+## How to Configure Prometheus to Monitor Client Nodes
 The client nodes are now ready for monitoring. To add clients to prometheus.yml, follow the steps below:
 
-On the monitoring server running Prometheus, open prometheus.yml for editing.
+1) On the monitoring server running Prometheus, open prometheus.yml for editing.
 
-sudo vi /etc/prometheus/prometheus.yml
+`sudo vi /etc/prometheus/prometheus.yml`
 
-Locate the section entitled scrape_configs, which contains a list of jobs. It currently lists a single job named prometheus. This job monitors the local Prometheus task on port 9090. Beneath the prometheus job, add a second job having the job_name of remote_collector. Include the following information.
+2) Locate the section entitled scrape_configs, which contains a list of jobs. It currently lists a single job named prometheus. This job monitors the local Prometheus task on port 9090. Beneath the prometheus job, add a second job having the job_name of remote_collector. Include the following information.
 
-A scrape_interval of 10s.
-Inside static_configs in the targets attribute, add a bracketed list of the IP addresses to monitor. Separate each entry using a comma.
-Append the port number :9100 to each IP address.
-To enable monitoring of the local server, add an entry for localhost:9100 to the list.
+- A scrape_interval of 10s.
+- Inside `static_configs` in the targets attribute, add a bracketed list of the IP addresses to monitor. Separate each entry using a comma.
+- Append the port number :9100 to each IP address.
+- To enable monitoring of the local server, add an entry for localhost:9100 to the list.
 The entry should resemble the following example. Replace remote_addr with the actual IP address of the client.
 
-
+```
 File: /etc/prometheus/prometheus.yml
 ...
 - job_name: "remote_collector"
   scrape_interval: 10s
   static_configs:
     - targets: ["remote_addr:9100"]
-To immediately refresh Prometheus, restart the prometheus service.
+```
 
-sudo systemctl restart prometheus
+3) To immediately refresh Prometheus, restart the prometheus service.
 
-Using a web browser, revisit the Prometheus web portal at port 9090 on the monitoring server. Select Status and then Targets. A second link for the remote_collector job is displayed, leading to port 9100 on the client. Click the link to review the statistics.
+`sudo systemctl restart prometheus`
+
+4) Using a web browser, revisit the Prometheus web portal at port 9090 on the monitoring server. Select Status and then Targets. A second link for the remote_collector job is displayed, leading to port 9100 on the client. Click the link to review the statistics.
 
 
-# How to Install and Deploy the Grafana Server
+## How to Install and Deploy the Grafana Server
 Prometheus is now collecting statistics from the clients listed in the scrape_configs section of its configuration file. However, the information can only be viewed as a raw data dump. The statistics are difficult to read and not too useful.
 
 Grafana provides an interface for viewing the statistics collected by Prometheus. Install Grafana on the same server running Prometheus and add Prometheus as a data source. Then install one or more panels for interpreting the data. To install and configure Grafana, follow these steps.
 
-Install some required utilities using apt.
+1) Install some required utilities using apt.
 
-sudo apt-get install -y apt-transport-https software-properties-common
+`sudo apt-get install -y apt-transport-https software-properties-common`
 
-Import the Grafana GPG key.
+2) Import the Grafana GPG key.
 
-sudo wget -q -O /usr/share/keyrings/grafana.key https://apt.grafana.com/gpg.key
+`sudo wget -q -O /usr/share/keyrings/grafana.key https://apt.grafana.com/gpg.key`
 
-Add the Grafana “stable releases” repository.
+3) Add the Grafana “stable releases” repository.
 
-echo "deb [signed-by=/usr/share/keyrings/grafana.key] https://apt.grafana.com stable main" | sudo tee -a /etc/apt/sources.list.d/grafana.list
+`echo "deb [signed-by=/usr/share/keyrings/grafana.key] https://apt.grafana.com stable main" | sudo tee -a /etc/apt/sources.list.d/grafana.list`
 
-Update the packages in the repository, including the new Grafana package.
+4) Update the packages in the repository, including the new Grafana package.
 
-sudo apt-get update
+`sudo apt-get update`
 
-Install the open-source version of Grafana.
+5) Reload the systemctl daemon.
 
-Note
-To install the Enterprise edition of Grafana, use the command sudo apt-get install grafana-enterprise instead.
-sudo apt-get install grafana
+`sudo systemctl daemon-reload`
 
-Reload the systemctl daemon.
-
-sudo systemctl daemon-reload
-
-Enable and start the Grafana server. Using systemctl enable configures the server to launch Grafana when the system boots.
-
+6) Enable and start the Grafana server. Using systemctl enable configures the server to launch Grafana when the system boots.
+```
 sudo systemctl enable grafana-server.service
 sudo systemctl start grafana-server
+```
 
-Verify the status of the Grafana server and ensure it is in the active state.
+7) Verify the status of the Grafana server and ensure it is in the active state.
 
-sudo systemctl status grafana-server
+`sudo systemctl status grafana-server`
 
 # Conclusion
 Prometheus is a system monitoring application that polls client systems for key metrics. Each client node must use an exporter to collect and expose the requested data. Prometheus is most effective when used together with the Grafana visualization tool. Grafana imports the metrics from Prometheus and presents them using an intuitive dashboard structure.
