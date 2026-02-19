@@ -1,3 +1,5 @@
+<img width="952" height="400" alt="https___dev-to-uploads s3 amazonaws com_uploads_articles_v77yy73dn8y58ix23rz1-Photoroom" src="https://github.com/user-attachments/assets/43057d6a-2e42-4112-b7b9-d3e13298f522" />
+
 # How to Install and Configure Prometheus and Grafana on Ubuntu?
 
 ## How to Install and Configure Prometheus, Grafana, and Node Exporter
