@@ -269,6 +269,8 @@ sudo systemctl start grafana-server
 Open the web browser and navigate to `http://localhost:3000.`
 The default username and password are both admin.
 
+
+
 # Conclusion
 Prometheus is a system monitoring application that polls client systems for key metrics. Each client node must use an exporter to collect and expose the requested data. Prometheus is most effective when used together with the Grafana visualization tool. Grafana imports the metrics from Prometheus and presents them using an intuitive dashboard structure.
 
