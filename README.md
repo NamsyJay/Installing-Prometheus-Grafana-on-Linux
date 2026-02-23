@@ -244,9 +244,10 @@ Grafana provides an interface for viewing the statistics collected by Prometheus
 
 `echo "deb [signed-by=/usr/share/keyrings/grafana.key] https://apt.grafana.com stable main" | sudo tee -a /etc/apt/sources.list.d/grafana.list`
 
-4) Update the packages in the repository, including the new Grafana package.
+4) Update and Install Grafana. Update the package list and install Grafana:e.
 
 `sudo apt-get update`
+`sudo apt-get install grafana`
 
 5) Reload the systemctl daemon.
 
