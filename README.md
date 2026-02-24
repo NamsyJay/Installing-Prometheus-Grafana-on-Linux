@@ -269,9 +269,13 @@ sudo systemctl start grafana-server
 Open the web browser and navigate to `http://localhost:3000.`
 The default username and password are both admin.
 
+9) Importing from Node Exporter API
+Select "Import" on the Dashboard page
+Select `Dashboard ID` 1860 (This is the official Node Exporter Full dashboard), and it will automatically populate with all your data.
+
 
 
 # Conclusion
-Prometheus is a system monitoring application that polls client systems for key metrics. Each client node must use an exporter to collect and expose the requested data. Prometheus is most effective when used together with the Grafana visualization tool. Grafana imports the metrics from Prometheus and presents them using an intuitive dashboard structure.
+Prometheus is a system monitoring application that polls client systems for key metrics. Each client node must use an exporter to collect and expose the requested data. Prometheus is most effective when used with the Grafana visualization tool. Grafana imports the metrics from Prometheus and presents them using an intuitive dashboard structure.
 
 To integrate the components, download and install Prometheus on a central server and configure Prometheus as a service. Install the Prometheus Node Exporter on each client to collect the data and configure Prometheus to poll the clients. Install Grafana on the same server as Prometheus and configure Prometheus as a data source.
