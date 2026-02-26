@@ -124,6 +124,7 @@ WantedBy=multi-user.target
 ` systemctl status prometheus`
 
 7) Access the Prometheus web interface and dashboard.
+   `localhost:9090`
 
 
 ## How To Install And Configure Node Exporter On The Client
